@@ -104,11 +104,16 @@ mydb.commit()
 #INSERT COUNTRIES VALUES
 unique_countries = df_results['country'].unique()
 sql = "INSERT INTO countries (country_name) VALUES (%s)"
+country_id_mapping = {}
 for country in unique_countries:
     val = (country,)
-    mycursor.execute(sql, val)
-mydb.commit()
+    mycursor.execute(sql, val) 
+    mydb.commit()
+    country_id = mycursor.lastrowid
+    country_id_mapping[country] = country_id
+
 print("The values of countries were inserted!")
+df_results['country'] = df_results['country'].map(country_id_mapping)
 
 #INSERT TEAMS VALUES
 unique_teams =  df_results['home_team'].tolist() + df_results['away_team'].tolist()
@@ -123,40 +128,30 @@ for team in unique_teams_list:
     team_id = mycursor.lastrowid
     team_id_mapping[team] = team_id
 print("The values of teams were inserted!")
+df_results['home_team'] = df_results['home_team'].map(team_id_mapping)
+df_results['away_team'] = df_results['away_team'].map(team_id_mapping)
+df_goalscores['home_team'] = df_goalscores['home_team'].map(team_id_mapping)
+df_goalscores['away_team'] = df_goalscores['away_team'].map(team_id_mapping)
+df_goalscores['team'] = df_goalscores['team'].map(team_id_mapping)
+df_shootouts['home_team'] = df_shootouts['home_team'].map(team_id_mapping)
+df_shootouts['away_team'] = df_shootouts['away_team'].map(team_id_mapping)
+df_shootouts['winner'] = df_shootouts['winner'].map(team_id_mapping)
+df_shootouts['first_shooter'] = df_shootouts['first_shooter'].map(team_id_mapping)
 
-df_results['home_team_id'] = df_results['home_team'].map(team_id_mapping)
-df_results['away_team_id'] = df_results['away_team'].map(team_id_mapping)
 
-# Salvar o DataFrame atualizado de volta ao arquivo CSV se desejar
-df_results.to_csv('db_dataet/arquivo_atualizado.csv', index=False)
-
-print("As colunas 'home_team' e 'away_team' foram atualizadas para 'team_id'!")
-    
 #INSERT TOURNAMENTS VALUES
 unique_tournaments=  df_results['tournament'].unique()
 sql = "INSERT INTO tournaments (tournament_name) VALUES (%s)"
+tournament_id_mapping = {}
 for tournament in unique_tournaments:
     val = (tournament,)
     mycursor.execute(sql, val)
-mydb.commit()
+    mydb.commit()
+    tournament_id = mycursor.lastrowid
+    tournament_id_mapping[tournament] = team_id
+df_results['tournament'] = df_results['tournament'].map(tournament_id_mapping)
 print("The values of tournaments were inserted!")
 
-
-
-def get_id_from_name(table_name, column_id,column_name,name):
-    query = f"SELECT {column_id} FROM {table_name} WHERE {column_name} = %s"
-    mycursor.execute(query, (name,))
-    result = mycursor.fetchone()
-    if result:
-        return result[0]
-    else:
-        return None
-    
-for index, row in df_results.iterrows():
-    home_team_id = get_id_from_name('Teams', 'team_id','team_name',row['home_team'])
-    away_team_id = get_id_from_name('Teams', 'team_id','team_name',row['away_team'])
-    df_results.at[index, 'home_team_id'] = home_team_id
-    df_results.at[index, 'away_team_id'] = away_team_id
 
 matches_insert_query = "INSERT INTO Matches (date, home_team_id, away_team_id, home_score, away_score, tournament_id, city, country_id, neutral) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
 mycursor.executemany(matches_insert_query, df_results)
