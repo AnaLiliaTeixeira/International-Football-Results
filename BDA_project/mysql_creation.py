@@ -114,6 +114,7 @@ for country in unique_countries:
 
 print("The values of countries were inserted!")
 df_results['country'] = df_results['country'].map(country_id_mapping)
+df_results = df_results.rename(columns={'country': 'country_id'})
 
 #INSERT TEAMS VALUES
 unique_teams =  df_results['home_team'].tolist() + df_results['away_team'].tolist()
@@ -129,14 +130,25 @@ for team in unique_teams_list:
     team_id_mapping[team] = team_id
 print("The values of teams were inserted!")
 df_results['home_team'] = df_results['home_team'].map(team_id_mapping)
+df_results = df_results.rename(columns={'home_team': 'home_team_id'})
 df_results['away_team'] = df_results['away_team'].map(team_id_mapping)
+df_results = df_results.rename(columns={'away_team': 'away_team_id'})
+
 df_goalscores['home_team'] = df_goalscores['home_team'].map(team_id_mapping)
+df_goalscores = df_goalscores.rename(columns={'home_team': 'home_team_id'})
 df_goalscores['away_team'] = df_goalscores['away_team'].map(team_id_mapping)
+df_goalscores = df_goalscores.rename(columns={'away_team': 'away_team_id'})
 df_goalscores['team'] = df_goalscores['team'].map(team_id_mapping)
+df_goalscores = df_goalscores.rename(columns={'team': 'team_id'})
+
 df_shootouts['home_team'] = df_shootouts['home_team'].map(team_id_mapping)
+df_shootouts = df_shootouts.rename(columns={'home_team': 'home_team'})
 df_shootouts['away_team'] = df_shootouts['away_team'].map(team_id_mapping)
+df_shootouts = df_shootouts.rename(columns={'away_team': 'away_team_id'})
 df_shootouts['winner'] = df_shootouts['winner'].map(team_id_mapping)
+df_shootouts = df_shootouts.rename(columns={'winner': 'winner_id'})
 df_shootouts['first_shooter'] = df_shootouts['first_shooter'].map(team_id_mapping)
+df_shootouts = df_shootouts.rename(columns={'first_shooter': 'first_shooter_id'})
 
 
 #INSERT TOURNAMENTS VALUES
@@ -150,9 +162,10 @@ for tournament in unique_tournaments:
     tournament_id = mycursor.lastrowid
     tournament_id_mapping[tournament] = team_id
 df_results['tournament'] = df_results['tournament'].map(tournament_id_mapping)
+df_results = df_results.rename(columns={'tournament': 'tournament_id'})
 print("The values of tournaments were inserted!")
 
-
+print(df_results)
 matches_insert_query = "INSERT INTO Matches (date, home_team_id, away_team_id, home_score, away_score, tournament_id, city, country_id, neutral) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
 mycursor.executemany(matches_insert_query, df_results)
 mydb.commit()
