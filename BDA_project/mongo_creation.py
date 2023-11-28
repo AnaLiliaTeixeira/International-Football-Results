@@ -27,21 +27,33 @@ matches = db.matches
 countries = db.countries
 tournaments = db.tournaments
 
-team = df_shootouts['home_team']+ df_shootouts['away_team']
-#falta o to_list
-print(team)
-#print(team)
-team = pd.DataFrame(team)
-team = team.drop_duplicates()
-team = team.to_dict()
-teams.insert_many([{' tema' :team.values()}])
+#Inserir dados na tabela teams
+all_teams = pd.concat([df_shootouts['home_team'], df_shootouts['away_team']])
+all_teams = pd.Series(all_teams)
+unique_teams = all_teams.drop_duplicates().to_list()
+teams.insert_many([{'team_name' : team} for team in unique_teams])
+
+#Inserir dados na tabela tournaments
+all_tournaments = df_results['tournament']
+tournaments.insert_many([{' tournament_name' : tournament} for tournament in all_tournaments])
+
+#Inserir dados na tabela countries
+all_countries = df_results['country']
+all_countries = pd.Series(all_countries)
+unique_countries = all_countries.drop_duplicates().to_list()
+countries.insert_many([{' country_name' : country} for country in unique_countries])
+
+# def convertListToIds(matchesList, column) :
+#     listIds = []
+#     for match in matchesList:
+#         listIds.append(teams.find(match[column]))
+#     return listIds
+    
+# #Inserir dados na tabela matches
+# #all_matches = pd.concat([df_results['date'], ])
+# print(convertListToIds(df_results, 'home_team'))
+# tournaments.insert_many([{' tournament_name' : tournament} for tournament in all_tournaments])
 
 client.close()
-
-############################SQL######################
-
-
-
-
 
 
