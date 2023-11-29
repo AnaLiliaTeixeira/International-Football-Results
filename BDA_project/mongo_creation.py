@@ -45,7 +45,7 @@ def convertItemToIds(element, collection, name):
     return document['_id'] if document else None
 
 def convertItemToMatch(date, home_team, away_team):
-    document = matches.find_one({'date': date, 'home_team_id': home_team, 'away_team_id': away_team})
+    document = matches.find_one({'date': date, 'home_team': home_team, 'away_team': away_team})
     return document['_id'] if document else None
 
 #Inserir dados na tabela matches
@@ -64,7 +64,7 @@ for row in df_shootouts.itertuples():
     match_id = convertItemToMatch(row.date, home_team_id, away_team_id)
     winner_id = convertItemToIds(row.winner, teams, 'team_name')
     first_shooter_id = convertItemToIds(row.first_shooter, teams, 'team_name')
-    goalscores.insert_one({'match': match_id, 'winner': winner_id, 'first_shooter': first_shooter_id})
+    shootouts.insert_one({'match': match_id, 'winner': winner_id, 'first_shooter': first_shooter_id})
 
 print("Inserted shootouts")
 
