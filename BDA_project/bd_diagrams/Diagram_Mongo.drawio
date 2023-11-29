@@ -1,76 +1,76 @@
-<mxfile host="app.diagrams.net" modified="2023-11-16T15:34:48.226Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36" etag="GvN1t922A6464s_8r5_g" version="22.1.2" type="device">
+<mxfile host="app.diagrams.net" modified="2023-11-29T14:13:16.400Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0" etag="2_F1oRaSc9_9xQKr_314" version="22.1.4" type="device">
   <diagram name="Página-1" id="arOwxLAoZ8xWaMdLT9DN">
-    <mxGraphModel dx="1195" dy="652" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="984" dy="548" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="IJKN9NjwNcGS7eLQUGR5-1" value="Matches{&lt;div&gt;&quot;_id&quot;: Objectid(),&amp;nbsp;&lt;/div&gt;&lt;div&gt;&quot;date&quot;: Date(),&lt;/div&gt;&lt;div&gt;&quot;home_team&quot;: ObjectId(),&amp;nbsp;&lt;/div&gt;&lt;div&gt;&quot;away_team&quot;: ObjectId(),&amp;nbsp;&lt;/div&gt;&lt;div&gt;&quot;home_score&quot;: int,&lt;/div&gt;&lt;div&gt;&quot;away_score&quot;: int,&lt;/div&gt;&lt;div&gt;&quot;tournament&quot;: ObjectId(),&lt;/div&gt;&lt;div&gt;&quot;city&quot;: String,&lt;/div&gt;&lt;div&gt;&quot;country&quot;: ObjectId(),&amp;nbsp;&lt;/div&gt;&lt;div&gt;&quot;neutral&quot;: boolean&lt;/div&gt;&lt;div style=&quot;&quot;&gt;}&lt;/div&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;align=left;" vertex="1" parent="1">
+        <mxCell id="IJKN9NjwNcGS7eLQUGR5-1" value="Matches{&lt;div&gt;&quot;_id&quot;: ObjectId(),&amp;nbsp;&lt;/div&gt;&lt;div&gt;&quot;date&quot;: Date(),&lt;/div&gt;&lt;div&gt;&quot;home_team&quot;: ObjectId(),&amp;nbsp;&lt;/div&gt;&lt;div&gt;&quot;away_team&quot;: ObjectId(),&amp;nbsp;&lt;/div&gt;&lt;div&gt;&quot;home_score&quot;: int,&lt;/div&gt;&lt;div&gt;&quot;away_score&quot;: int,&lt;/div&gt;&lt;div&gt;&quot;tournament&quot;: ObjectId(),&lt;/div&gt;&lt;div&gt;&quot;city&quot;: String,&lt;/div&gt;&lt;div&gt;&quot;country&quot;: ObjectId(),&amp;nbsp;&lt;/div&gt;&lt;div&gt;&quot;neutral&quot;: boolean&lt;/div&gt;&lt;div style=&quot;&quot;&gt;}&lt;/div&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;align=left;" parent="1" vertex="1">
           <mxGeometry x="320" y="280" width="181" height="181" as="geometry" />
         </mxCell>
-        <mxCell id="IJKN9NjwNcGS7eLQUGR5-2" value="Shootout{&lt;br&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;_id&quot;: Objectid(),&amp;nbsp;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;shootout_id&quot;: ObjectId(),&amp;nbsp;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;winner_id&quot;: ObjectId(),&amp;nbsp;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;first_shooter_id&quot;: ObjectId()&lt;/div&gt;}" style="whiteSpace=wrap;html=1;aspect=fixed;align=left;" vertex="1" parent="1">
+        <mxCell id="IJKN9NjwNcGS7eLQUGR5-2" value="Shootout{&lt;br&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;_id&quot;: ObjectId()&lt;span style=&quot;background-color: initial;&quot;&gt;,&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&quot;match_id&quot;: ObjectId(),&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;winner_id&quot;: ObjectId(),&amp;nbsp;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;first_shooter_id&quot;: ObjectId()&lt;/div&gt;}" style="whiteSpace=wrap;html=1;aspect=fixed;align=left;" parent="1" vertex="1">
           <mxGeometry x="620" y="40" width="160" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="IJKN9NjwNcGS7eLQUGR5-3" value="Goalscores{&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;_id&quot;: Objectid(),&amp;nbsp;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;goal_id&quot;: ObjectId(),&amp;nbsp;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;match_id&quot;: ObjectId(),&amp;nbsp;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;team_id&quot;: ObjectId(),&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;scorer&quot;: String,&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;penalty&quot;: Boolean,&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;own_goal&quot;: Boolean&lt;/div&gt;&lt;span style=&quot;&quot;&gt;}&lt;/span&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;align=left;" vertex="1" parent="1">
+        <mxCell id="IJKN9NjwNcGS7eLQUGR5-3" value="Goalscores{&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;_id&quot;: ObjectId()&lt;span style=&quot;background-color: initial;&quot;&gt;,&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;match_id&quot;: ObjectId(),&amp;nbsp;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;team_id&quot;: ObjectId(),&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;scorer&quot;: String,&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;penalty&quot;: Boolean,&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;own_goal&quot;: Boolean&lt;/div&gt;&lt;span style=&quot;&quot;&gt;}&lt;/span&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;align=left;" parent="1" vertex="1">
           <mxGeometry x="65" y="20" width="190" height="190" as="geometry" />
         </mxCell>
-        <mxCell id="IJKN9NjwNcGS7eLQUGR5-4" value="Teams{&lt;br style=&quot;border-color: var(--border-color); text-align: left;&quot;&gt;&lt;div style=&quot;border-color: var(--border-color); text-align: left;&quot;&gt;&quot;_id&quot;: Objectid(),&amp;nbsp;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color); text-align: left;&quot;&gt;&quot;team_id&quot;: ObjectId(),&amp;nbsp;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color); text-align: left;&quot;&gt;&quot;team_name&quot;: String&amp;nbsp;&lt;/div&gt;&lt;span style=&quot;text-align: left;&quot;&gt;}&lt;/span&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+        <mxCell id="IJKN9NjwNcGS7eLQUGR5-4" value="Teams{&lt;br style=&quot;border-color: var(--border-color); text-align: left;&quot;&gt;&lt;div style=&quot;border-color: var(--border-color); text-align: left;&quot;&gt;&quot;_id&quot;: ObjectId(),&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color); text-align: left;&quot;&gt;&quot;team_name&quot;: String&amp;nbsp;&lt;/div&gt;&lt;span style=&quot;text-align: left;&quot;&gt;}&lt;/span&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
           <mxGeometry x="320" y="40" width="140" height="140" as="geometry" />
         </mxCell>
-        <mxCell id="IJKN9NjwNcGS7eLQUGR5-5" value="Tournaments{&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;_id&quot;: Objectid(),&amp;nbsp;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;tournement_id&quot;: ObjectId(),&amp;nbsp;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;tournement_name&quot;: String&lt;/div&gt;&lt;span style=&quot;&quot;&gt;}&lt;/span&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;align=left;" vertex="1" parent="1">
+        <mxCell id="IJKN9NjwNcGS7eLQUGR5-5" value="Tournaments{&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;_id&quot;: ObjectId(),&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;tournament_name&quot;: String&lt;/div&gt;&lt;span style=&quot;&quot;&gt;}&lt;/span&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;align=left;" parent="1" vertex="1">
           <mxGeometry x="610" y="280" width="160" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="IJKN9NjwNcGS7eLQUGR5-6" value="Countries{&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;_id&quot;: Objectid(),&amp;nbsp;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;countrie_id&quot;: ObjectId(),&amp;nbsp;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;name&quot;: String()&lt;/div&gt;&lt;span style=&quot;&quot;&gt;}&lt;/span&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;align=left;" vertex="1" parent="1">
+        <mxCell id="IJKN9NjwNcGS7eLQUGR5-6" value="Countries{&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;_id&quot;: ObjectId(),&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&quot;country_name&quot;: String()&lt;/div&gt;&lt;span style=&quot;&quot;&gt;}&lt;/span&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;align=left;" parent="1" vertex="1">
           <mxGeometry x="90" y="300" width="140" height="140" as="geometry" />
         </mxCell>
-        <mxCell id="IJKN9NjwNcGS7eLQUGR5-8" value="" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="IJKN9NjwNcGS7eLQUGR5-3">
+        <mxCell id="IJKN9NjwNcGS7eLQUGR5-8" value="" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="IJKN9NjwNcGS7eLQUGR5-3" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="410" y="280" as="sourcePoint" />
             <mxPoint x="320" y="110" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="IJKN9NjwNcGS7eLQUGR5-9" value="" style="endArrow=none;html=1;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="IJKN9NjwNcGS7eLQUGR5-2" target="IJKN9NjwNcGS7eLQUGR5-4">
+        <mxCell id="IJKN9NjwNcGS7eLQUGR5-9" value="" style="endArrow=none;html=1;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="IJKN9NjwNcGS7eLQUGR5-2" target="IJKN9NjwNcGS7eLQUGR5-4" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="410" y="280" as="sourcePoint" />
             <mxPoint x="460" y="230" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="IJKN9NjwNcGS7eLQUGR5-10" value="" style="endArrow=none;html=1;rounded=0;exitX=0.988;exitY=0.712;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1" source="IJKN9NjwNcGS7eLQUGR5-4" target="IJKN9NjwNcGS7eLQUGR5-2">
+        <mxCell id="IJKN9NjwNcGS7eLQUGR5-10" value="" style="endArrow=none;html=1;rounded=0;exitX=0.988;exitY=0.712;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="IJKN9NjwNcGS7eLQUGR5-4" target="IJKN9NjwNcGS7eLQUGR5-2" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="410" y="280" as="sourcePoint" />
             <mxPoint x="460" y="230" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="IJKN9NjwNcGS7eLQUGR5-11" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" target="IJKN9NjwNcGS7eLQUGR5-4">
+        <mxCell id="IJKN9NjwNcGS7eLQUGR5-11" value="" style="endArrow=none;html=1;rounded=0;" parent="1" target="IJKN9NjwNcGS7eLQUGR5-4" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="410" y="280" as="sourcePoint" />
             <mxPoint x="460" y="230" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="IJKN9NjwNcGS7eLQUGR5-12" value="" style="endArrow=none;html=1;rounded=0;exitX=0.709;exitY=-0.006;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="IJKN9NjwNcGS7eLQUGR5-1" target="IJKN9NjwNcGS7eLQUGR5-4">
+        <mxCell id="IJKN9NjwNcGS7eLQUGR5-12" value="" style="endArrow=none;html=1;rounded=0;exitX=0.709;exitY=-0.006;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" parent="1" source="IJKN9NjwNcGS7eLQUGR5-1" target="IJKN9NjwNcGS7eLQUGR5-4" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="410" y="280" as="sourcePoint" />
             <mxPoint x="460" y="230" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="IJKN9NjwNcGS7eLQUGR5-13" value="" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="IJKN9NjwNcGS7eLQUGR5-1" target="IJKN9NjwNcGS7eLQUGR5-2">
+        <mxCell id="IJKN9NjwNcGS7eLQUGR5-13" value="" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" parent="1" source="IJKN9NjwNcGS7eLQUGR5-1" target="IJKN9NjwNcGS7eLQUGR5-2" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="410" y="280" as="sourcePoint" />
             <mxPoint x="460" y="230" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="IJKN9NjwNcGS7eLQUGR5-14" value="" style="endArrow=none;html=1;rounded=0;exitX=1.008;exitY=0.532;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.005;entryY=0.644;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="IJKN9NjwNcGS7eLQUGR5-1" target="IJKN9NjwNcGS7eLQUGR5-5">
+        <mxCell id="IJKN9NjwNcGS7eLQUGR5-14" value="" style="endArrow=none;html=1;rounded=0;exitX=1.008;exitY=0.532;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.005;entryY=0.644;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="IJKN9NjwNcGS7eLQUGR5-1" target="IJKN9NjwNcGS7eLQUGR5-5" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="520" y="400" as="sourcePoint" />
             <mxPoint x="570" y="350" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="IJKN9NjwNcGS7eLQUGR5-15" value="" style="endArrow=none;html=1;rounded=0;exitX=0;exitY=0.532;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="IJKN9NjwNcGS7eLQUGR5-1" target="IJKN9NjwNcGS7eLQUGR5-6">
+        <mxCell id="IJKN9NjwNcGS7eLQUGR5-15" value="" style="endArrow=none;html=1;rounded=0;exitX=0;exitY=0.532;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="IJKN9NjwNcGS7eLQUGR5-1" target="IJKN9NjwNcGS7eLQUGR5-6" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="410" y="280" as="sourcePoint" />
             <mxPoint x="460" y="230" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="IJKN9NjwNcGS7eLQUGR5-16" value="" style="endArrow=none;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0;exitY=0.25;exitDx=0;exitDy=0;" edge="1" parent="1" source="IJKN9NjwNcGS7eLQUGR5-1" target="IJKN9NjwNcGS7eLQUGR5-3">
+        <mxCell id="IJKN9NjwNcGS7eLQUGR5-16" value="" style="endArrow=none;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0;exitY=0.25;exitDx=0;exitDy=0;" parent="1" source="IJKN9NjwNcGS7eLQUGR5-1" target="IJKN9NjwNcGS7eLQUGR5-3" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="410" y="280" as="sourcePoint" />
             <mxPoint x="460" y="230" as="targetPoint" />
