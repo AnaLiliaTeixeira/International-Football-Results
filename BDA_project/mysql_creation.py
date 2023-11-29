@@ -69,7 +69,7 @@ mycursor.execute('''CREATE TABLE Matches (
         tournament_id INTEGER,
         city VARCHAR(245),
         country_id INTEGER,
-        neutral BOOLEAN,
+        neutral BOOLEAN NOT NULL,
         FOREIGN KEY(home_team_id) REFERENCES Teams(team_id),
         FOREIGN KEY(away_team_id) REFERENCES Teams(team_id),
         FOREIGN KEY(tournament_id) REFERENCES Tournaments(tournament_id),
@@ -133,14 +133,12 @@ df_results['home_team'] = df_results['home_team'].map(team_id_mapping)
 df_results = df_results.rename(columns={'home_team': 'home_team_id'})
 df_results['away_team'] = df_results['away_team'].map(team_id_mapping)
 df_results = df_results.rename(columns={'away_team': 'away_team_id'})
-
 df_goalscores['home_team'] = df_goalscores['home_team'].map(team_id_mapping)
 df_goalscores = df_goalscores.rename(columns={'home_team': 'home_team_id'})
 df_goalscores['away_team'] = df_goalscores['away_team'].map(team_id_mapping)
 df_goalscores = df_goalscores.rename(columns={'away_team': 'away_team_id'})
 df_goalscores['team'] = df_goalscores['team'].map(team_id_mapping)
 df_goalscores = df_goalscores.rename(columns={'team': 'team_id'})
-
 df_shootouts['home_team'] = df_shootouts['home_team'].map(team_id_mapping)
 df_shootouts = df_shootouts.rename(columns={'home_team': 'home_team'})
 df_shootouts['away_team'] = df_shootouts['away_team'].map(team_id_mapping)
@@ -160,26 +158,28 @@ for tournament in unique_tournaments:
     mycursor.execute(sql, val)
     mydb.commit()
     tournament_id = mycursor.lastrowid
-    tournament_id_mapping[tournament] = team_id
+    tournament_id_mapping[tournament] = tournament_id
 df_results['tournament'] = df_results['tournament'].map(tournament_id_mapping)
 df_results = df_results.rename(columns={'tournament': 'tournament_id'})
 print("The values of tournaments were inserted!")
 
-print(df_results)
+df_results_list = df_results.values.tolist()
 matches_insert_query = "INSERT INTO Matches (date, home_team_id, away_team_id, home_score, away_score, tournament_id, city, country_id, neutral) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-mycursor.executemany(matches_insert_query, df_results)
+mycursor.executemany(matches_insert_query, df_results_list)
 mydb.commit()
 print("The values of Matches were inserted!")
 
 # Inserção na tabela Shootouts
+df_shootouts_list = df_shootouts.values.tolist()
 shootouts_insert_query = "INSERT INTO Shootouts (match_id, winner_id, first_shooter_id) VALUES (%s, %s, %s)"
-mycursor.executemany(shootouts_insert_query, df_shootouts)
+mycursor.executemany(shootouts_insert_query, df_shootouts_list)
 mydb.commit()
 print("The values of Shootouts were inserted!")
 
 # Inserção na tabela Goalscorers
+df_goalscores_list = df_goalscores.values.tolist()
 goalscorers_insert_query = "INSERT INTO Goalscorers (match_id, team_id, scorer, own_goal, penalty) VALUES (%s, %s, %s, %s, %s)"
-mycursor.executemany(goalscorers_insert_query, df_goalscores)
+mycursor.executemany(goalscorers_insert_query, df_goalscores_list)
 mydb.commit()
 print("The values of Goalscorers were inserted!")
 
