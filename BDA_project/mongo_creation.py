@@ -1,7 +1,7 @@
 import pandas as pd
 import json
 from pymongo import MongoClient
-from json_files import *
+from json_files_creation import *
 
 data_goalscores = json.load(open("goalscorers.json"))
 data_shootouts = json.load(open("shootouts.json"))

@@ -1,7 +1,6 @@
 import mysql.connector
 import pandas as pd
-from json_files import *
-from pymongo import MongoClient
+from json_files_creation import *
 
 mydb = mysql.connector.connect(
     host="localhost",
@@ -47,18 +46,21 @@ mycursor.execute('''CREATE TABLE Countries (
     )
 ''')
 mydb.commit()
+print("Table Countries created!")
 mycursor.execute('''CREATE TABLE Tournaments(
         tournament_id INTEGER PRIMARY KEY AUTO_INCREMENT,
         tournament_name VARCHAR(245)
     )
 ''')
 mydb.commit()
+print("Table Tournaments created!")
 mycursor.execute('''CREATE TABLE Teams (
         team_id INTEGER AUTO_INCREMENT PRIMARY KEY,
         team_name VARCHAR(245)
     )
 ''')
 mydb.commit()
+print("Table Teams created!")
 mycursor.execute('''CREATE TABLE Matches (
         match_id INTEGER AUTO_INCREMENT PRIMARY KEY,
         date DATE,
@@ -77,6 +79,7 @@ mycursor.execute('''CREATE TABLE Matches (
     )
 ''')
 mydb.commit()
+print("Table Matches created!")
 mycursor.execute('''CREATE TABLE Shootouts (
         shootout_id INTEGER PRIMARY KEY AUTO_INCREMENT,
         match_id INTEGER,
@@ -88,6 +91,7 @@ mycursor.execute('''CREATE TABLE Shootouts (
     )
 ''')
 mydb.commit()
+print("Table Shootouts created!")
 mycursor.execute('''CREATE TABLE Goalscorers (
         goal_id INTEGER PRIMARY KEY AUTO_INCREMENT,
         match_id INTEGER,
@@ -101,6 +105,7 @@ mycursor.execute('''CREATE TABLE Goalscorers (
     )
 ''')
 mydb.commit()
+print("Table Goalscorers created!")
 
 #INSERT COUNTRIES VALUES
 unique_countries = df_results['country'].unique()
@@ -188,6 +193,8 @@ for shootout in df_shootouts_list:
         shootout_data = (match_id, shootout[3], shootout[4])
         mycursor.execute(shootouts_insert_query, shootout_data)
         mydb.commit()
+    else:
+        print(shootout)
 print("The values of Shootouts were inserted!")
 
 # Inserção na tabela Goalscorers
@@ -200,6 +207,8 @@ for goalscore in df_goalscores_list:
         goalscore_data = (match_id, goalscore[3], goalscore[4], goalscore[5], goalscore[6], goalscore[7])
         mycursor.execute(goalscorers_insert_query, goalscore_data)
         mydb.commit()
+    else:
+        print(shootout)
 print("The values of Goalscorers were inserted!")
 
 
