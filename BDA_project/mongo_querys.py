@@ -22,9 +22,9 @@ print("Matches in Lisbon in 2023:")
 for doc in mydoc:
     pprint.pprint(doc)
 
-simpleQuery2 = {'$and:' [{'scorer': 'Cristiano Ronaldo'}, {'minute': {'$lt': 5}}]}
-mydoc = matches.find(simpleQuery2)
-print("Golos que o Ronaldo marcou antes dos 5 minutos:")
+simpleQuery2 = {'$and':[{'scorer': 'Cristiano Ronaldo'}, {'minute': {'$lt': 5}}]}
+mydoc = goalscores.find(simpleQuery2)
+print("\nGolos que o Ronaldo marcou antes dos 5 minutos:")
 for doc in mydoc:
     pprint.pprint(doc)
 # b. Two complex queries, using joins and aggregates, involving at least 2 tables/collections of your database (em que uma tem que ter mais do 5 joins)
@@ -42,122 +42,12 @@ for doc in mydoc:
 # cujo os jogos foram realizados em Portugal 
 # e que esses jogos podem ter ido ou não a disputa de penaltys. 
 
-# complexQuery1 = [
-#     {"$lookup": {
-#         "from": "matches",
-#         "localField": "match_id",
-#         "foreignField": "match_id",
-#         "as": "match"
-#     }},
-#     {"$unwind": "$match"},
-#     {"$lookup": {
-#         "from": "shootouts",
-#         "localField": "match_id",
-#         "foreignField": "match.match_id",
-#         "as": "shootout"
-#     }},
-#     {"$lookup": {
-#         "from": "teams",
-#         "localField": "team_id",
-#         "foreignField": "team_id",
-#         "as": "team"
-#     }},
-#     {"$lookup": {
-#         "from": "tournaments",
-#         "localField": "tournament_id",
-#         "foreignField": "match.tournament_id",
-#         "as": "tournament"
-#     }},
-#     {"$lookup": {
-#         "from": "countries",
-#         "localField": "country_id",
-#         "foreignField": "match.country_id",
-#         "as": "country"
-#     }},
-#     {"$match": {
-#         "team.team_name": "Portugal",
-#         "tournament.tournament_name": "FIFA World Cup Qualification",
-#         "country.country_name": "Portugal"
-#     }},
-#     {"$group": {
-#         "_id": "$scorer",
-#         "total_gols": {"$sum": 1}
-#     }},
-#     {"$sort": {"total_gols": -1}},
-#     {"$limit": 5}
-# ]
-
-# pipeline = [
-#     {
-#         "$lookup": {
-#             "from": "Matches",
-#             "localField": "match_id",
-#             "foreignField": "match_id",
-#             "as": "match"
-#         }
-#     },
-#     {
-#         "$unwind": "$match"
-#     },
-#     {
-#         "$lookup": {
-#             "from": "Shootouts",
-#             "localField": "match_id",
-#             "foreignField": "match.match_id",
-#             "as": "shootout"
-#         }
-#     },
-#     {
-#         "$lookup": {
-#             "from": "Teams",
-#             "localField": "team_id",
-#             "foreignField": "team_id",
-#             "as": "team"
-#         }
-#     },
-#     {
-#         "$lookup": {
-#             "from": "Tournaments",
-#             "localField": "tournament_id",
-#             "foreignField": "match.tournament_id",
-#             "as": "tournament"
-#         }
-#     },
-#     {
-#         "$lookup": {
-#             "from": "Countries",
-#             "localField": "country_id",
-#             "foreignField": "match.country_id",
-#             "as": "country"
-#         }
-#     },
-#     {
-#         "$match": {
-#             "team.team_name": "Portugal",
-#             "tournament.tournament_name": "FIFA World Cup Qualification",
-#             "country.country_name": "Portugal"
-#         }
-#     },
-#     {
-#         "$group": {
-#             "_id": "$scorer",
-#             "total_gols": {"$sum": 1}
-#         }
-#     },
-#     {
-#         "$sort": {"total_gols": -1}
-#     },
-#     {
-#         "$limit": 5
-#     }
-# ]
-
-pipeline = [
+complexQuery1 = [
     {
         "$lookup": {
             "from": "Matches",
-            "localField": "match_id",
-            "foreignField": "_id",
+            "localField": "_id",
+            "foreignField": "match._id",
             "as": "match"
         }
     },
@@ -167,7 +57,7 @@ pipeline = [
     {
         "$lookup": {
             "from": "Shootouts",
-            "localField": "match._id",
+            "localField": "shootouts._id",
             "foreignField": "match._id",
             "as": "shootout"
         }
@@ -175,7 +65,7 @@ pipeline = [
     {
         "$lookup": {
             "from": "Teams",
-            "localField": "team_id",
+            "localField": "team._id",
             "foreignField": "_id",
             "as": "team"
         }
@@ -183,16 +73,16 @@ pipeline = [
     {
         "$lookup": {
             "from": "Tournaments",
-            "localField": "match.tournament_id",
-            "foreignField": "_id",
+            "localField": "_id",
+            "foreignField": "match.tournament_id",
             "as": "tournament"
         }
     },
     {
         "$lookup": {
             "from": "Countries",
-            "localField": "match.country_id",
-            "foreignField": "_id",
+            "localField": "_id",
+            "foreignField": "match.country_id",
             "as": "country"
         }
     },
@@ -200,7 +90,7 @@ pipeline = [
         "$match": {
             "team.team_name": "Portugal",
             "tournament.tournament_name": "FIFA World Cup Qualification",
-            "country.country_name": "BDA2324_4_country"
+            "country.country_name": "Portugal"
         }
     },
     {
@@ -217,71 +107,71 @@ pipeline = [
     }
 ]
 
-result = goalscores.aggregate(pipeline)
+result = goalscores.aggregate(complexQuery1)
 
 print()
 print("Top 5 scorers from Portugal in FIFA World Cup Qualification:")
 for doc in result:
     pprint.pprint(doc)
 
-#Complex Query 2
-pipeline = [
-    {
-        "$lookup": {
-            "from": "Teams",
-            "localField": "home_team_id",
-            "foreignField": "team_id",
-            "as": "home_team"
-        }
-    },
-    {
-        "$unwind": "$home_team"
-    },
-    {
-        "$lookup": {
-            "from": "Teams",
-            "localField": "away_team_id",
-            "foreignField": "team_id",
-            "as": "away_team"
-        }
-    },
-    {
-        "$unwind": "$away_team"
-    },
-    {
-        "$lookup": {
-            "from": "Goalscorers",
-            "localField": "match_id",
-            "foreignField": "match_id",
-            "as": "goalscorers"
-        }
-    },
-    {
-        "$group": {
-            "_id": {
-                "match_id": "$match_id",
-                "date": "$date",
-                "home_team": "$home_team.team_name",
-                "away_team": "$away_team.team_name",
-                "home_score": "$home_score",
-                "away_score": "$away_score"
-            },
-            "total_goals": {"$sum": {"$size": "$goalscorers"}}
-        }
-    },
-    {
-        "$sort": {"total_goals": -1}
-    },
-    {
-        "$limit": 5
-    }
-]
+# #Complex Query 2
+# complexQuery2 = [
+#     {
+#         "$lookup": {
+#             "from": "teams",
+#             "localField": "._id",
+#             "foreignField": "matches.home_team._id",
+#             "as": "home_team"
+#         }
+#     },
+#     {
+#         "$unwind": "$home_team"
+#     },
+#     {
+#         "$lookup": {
+#             "from": "teams",
+#             "localField": "._id",
+#             "foreignField": "matches.away_team._id",
+#             "as": "away_team"
+#         }
+#     },
+#     {
+#         "$unwind": "$away_team"
+#     },
+#     {
+#         "$lookup": {
+#             "from": "goalscorers",
+#             "localField": "._id",
+#             "foreignField": "match._id",
+#             "as": "goalscorers"
+#         }
+#     },
+#     {
+#         "$group": {
+#             "_id": {
+#                 "match_id": "$match_id",
+#                 "date": "$date",
+#                 "home_team": "$home_team.team_name",
+#                 "away_team": "$away_team.team_name",
+#                 "home_score": "$home_score",
+#                 "away_score": "$away_score"
+#             },
+#             "total_goals": {"$sum": {"$size": "$goalscorers"}}
+#         }
+#     },
+#     {
+#         "$sort": {"total_goals": -1}
+#     },
+#     {
+#         "$limit": 5
+#     }
+# ]
 
-result2 = matches_collection.aggregate(pipeline)
-print()
-print("Complex query 2:")
-for doc in result2:
-    pprint.pprint(doc)
+# result2 = matches.aggregate(complexQuery2)
+# print()
+# print("Complex query 2:")
+# for doc in result2:
+#     pprint.pprint(doc)
 
 # c. One update
 updateQuery = {'date':'1882-02-18'}
@@ -298,5 +188,7 @@ teams.insert_one({'team_name': 'BDA2324_4_team1'})
 teams.insert_one({'team_name': 'BDA2324_4_team2'})
 tournaments.insert_one({'tournament_name': 'BDA2324_4_tournament'})
 countries.insert_one({'country_name': 'BDA2324_4_country'})
-matches.insert_one({'date':'2023-11-30', 'home_team': teams.find_one({'team_name': 'BDA2324_4_team1'})['_id'], 'away_team': teams.find_one({'team_name': 'BDA2324_4_team2'})['_id'], 'home_score': 1, 'away_score': 2, 'tournament': tournaments.find_one({'tournament_name': 'BDA2324_4_tournament'})['_id'], 'city': 'Lisbon', 'country': countries.find_one({'country_name': 'BDA2324_4_country'})['_id'], 'neutral': False})
-shootouts.insert_one({'match': matches.find_one({'date':'2023-11-30'}), 'team': teams.find_one({'team_name': 'BDA2324_4_team1'})['_id'], 'scorer':'Tomas Piteira', 'penalty': 'true', 'own_goal':'false'})
+matches.insert_one({'date':'2023-11-30', 'home_team': teams.find_one({'team_name': 'BDA2324_4_team1'})['_id'], 'away_team': teams.find_one({'team_name': 'BDA2324_4_team2'})['_id'], 'home_score': 1, 'away_score': 1, 'tournament': tournaments.find_one({'tournament_name': 'BDA2324_4_tournament'})['_id'], 'city': 'Lisbon', 'country': countries.find_one({'country_name': 'BDA2324_4_country'})['_id'], 'neutral': False})
+goalscores.insert_one({'match': matches.find_one({'date':'2023-11-30'}), 'team': teams.find_one({'team_name': 'BDA2324_4_team1'})['_id'], 'scorer':'Tomas Piteira', 'minute': 44, 'own_goal':'false', 'penalty':'false'})
+goalscores.insert_one({'match': matches.find_one({'date':'2023-11-30'}), 'team': teams.find_one({'team_name': 'BDA2324_4_team2'})['_id'], 'scorer':'Daniel Lopes', 'minute': 45, 'own_goal':'false', 'penalty':'false'})
+shootouts.insert_one({'match': matches.find_one({'date':'2023-11-30'}), 'home_team': teams.find_one({'team_name': 'BDA2324_4_team1'})['_id'], 'away_team': teams.find_one({'team_name': 'BDA2324_4_team1'})['_id'], 'winner': teams.find_one({'team_name': 'BDA2324_4_team2'})['_id'], 'first_shooter':teams.find_one({'team_name': 'BDA2324_4_team1'})['_id']})
