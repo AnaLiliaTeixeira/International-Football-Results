@@ -1,53 +1,4 @@
-Matches Table/Collection:
-
-Primary Key: match_id (Auto-incrementing unique identifier)
-Columns:
-date (Date)
-home_team_id (Foreign Key referencing the Teams table)
-away_team_id (Foreign Key referencing the Teams table)
-home_score (Integer)
-away_score (Integer)
-tournament_id (Foreign Key referencing the Tournaments table)
-city (String)
-country_id (Foreign Key referencing the Countries table)
-neutral (Boolean)
-
-Shootouts Table/Collection:
-Primary Key: shootout_id (Auto-incrementing unique identifier)
-Columns:
-match_id (Foreign Key referencing the Matches table)
-winner_id (Foreign Key referencing the Teams table)
-first_shooter_id (Foreign Key referencing the Teams table)
-
-Goalscorers Table/Collection:
-
-Primary Key: goal_id (Auto-incrementing unique identifier)
-Columns:
-match_id (Foreign Key referencing the Matches table)
-team_id (Foreign Key referencing the Teams table)
-scorer (String)
-own_goal (Boolean)
-penalty (Boolean)
-
-Teams Table/Collection:
-
-Primary Key: team_id (Auto-incrementing unique identifier)
-Columns:
-team_name (String)
-Tournaments Table/Collection:
-
-Primary Key: tournament_id (Auto-incrementing unique identifier)
-Columns:
-tournament_name (String)
-Countries Table/Collection:
-
-Primary Key: country_id (Auto-incrementing unique identifier)
-Columns:
-country_name (String)
-
-
 _____________________________________
-
 Tabela Matches:
 
 match_id (Chave Primária, Inteiro Auto-Incremento)
@@ -60,29 +11,34 @@ tournament_id (Chave Estrangeira referenciando Tournaments)
 city (Texto)
 country_id (Chave Estrangeira referenciando Countries)
 neutral (Booleano)
+---------------------
 Tabela Shootouts:
 
 shootout_id (Chave Primária, Inteiro Auto-Incremento)
 match_id (Chave Estrangeira referenciando Matches)
 winner_id (Chave Estrangeira referenciando Teams)
 first_shooter_id (Chave Estrangeira referenciando Teams)
-
+---------------------
 Tabela Goalscorers:
+
 goal_id (Chave Primária, Inteiro Auto-Incremento)
 match_id (Chave Estrangeira referenciando Matches)
 team_id (Chave Estrangeira referenciando Teams)
 scorer (Texto)
+minute (int)
 own_goal (Booleano)
 penalty (Booleano)
-
+---------------------
 Tabela Teams:
+
 team_id (Chave Primária, Inteiro Auto-Incremento)
 team_name (Texto)
-
+---------------------
 Tabela Tournaments:
 
 tournament_id (Chave Primária, Inteiro Auto-Incremento)
 tournament_name (Texto)
+---------------------
 Tabela Countries:
 
 country_id (Chave Primária, Inteiro Auto-Incremento)

@@ -210,5 +210,3 @@ for goalscore in df_goalscores_list:
     else:
         print(shootout)
 print("The values of Goalscorers were inserted!")
-
-
