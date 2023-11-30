@@ -74,7 +74,7 @@ for row in df_goalscores.itertuples():
     away_team_id = convertItemToIds(row.away_team, teams, 'team_name')
     match_id = convertItemToMatch(row.date, home_team_id, away_team_id)
     team_id = convertItemToIds(row.team, teams, 'team_name')
-    goalscores.insert_one({'match': match_id, 'team': team_id, 'scorer': row.scorer, 'penalty': row.penalty, 'own_goal': row.own_goal})
+    goalscores.insert_one({'match': match_id, 'team': team_id, 'scorer': row.scorer, 'minute':row.minute, 'penalty': row.penalty, 'own_goal': row.own_goal})
 
 print("Inserted goalscores")
 
