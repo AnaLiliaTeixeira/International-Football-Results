@@ -5,7 +5,7 @@ from json_files_creation import *
 mydb = mysql.connector.connect(
     host="localhost",
     user="root",
-    password='1234'
+    password='senha123'
 )
 mycursor = mydb.cursor()
 mycursor.execute("SHOW DATABASES")
@@ -16,7 +16,7 @@ if db_exists:
     mydb = mysql.connector.connect(
         host="localhost",
         user="root",
-        password='1234',
+        password='senha123',
         database=desired_database
     )
     print(f"Connected to database '{desired_database}'")
@@ -25,7 +25,7 @@ else:
     mydb = mysql.connector.connect(
         host="localhost",
         user="root",
-        password='1234',
+        password='senha123',
         database=desired_database
     )
     print(f"Database '{desired_database}' created and connected successfully")
