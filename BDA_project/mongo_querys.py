@@ -14,7 +14,7 @@ matches = db.matches
 countries = db.countries
 tournaments = db.tournaments
 
-with open('performance_mongo.txt', 'w') as querys_archive:
+with open('performance_mongo.csv', 'w') as querys_archive:
     querys_archive.write("Simple Query1 BO, Simple Query2 BO, ComplexQuery1 BO, ComplexQuery2 BO, Simple Query1 AO, Simple Query2 AO, ComplexQuery1 AO, ComplexQuery2 AO\n")
 
 # a. Two simples queries, selecting data from one or two columns/fields
@@ -100,11 +100,11 @@ complexQuery1 = [
         {
         "$group": {
             "_id": "$scorer",
-            "total_gols": { "$sum": 1 }
+            "total_goals": { "$sum": 1 }
         }
     },
     {
-        "$sort": { "total_gols": -1 } 
+        "$sort": { "total_goals": -1 } 
     },
     {
         "$limit": 5
@@ -165,7 +165,7 @@ print("\nResultado da complex query 2:")
 pprint.pprint(list(result2))
 time_complexQuery2 = end_time_complexQuery2 - start_time_complexQuery2
 print("---------------------------------------Tempo total da operação de ComplexQuery2:", time_complexQuery2, 'segundos')
-with open('performance_mongo.txt', 'a') as querys_archive:
+with open('performance_mongo.csv', 'a') as querys_archive:
     querys_archive.write(str(time_simpleQuery1) + ', ' + str(time_simpleQuery2) + ', ' + str(time_complexQuery1) + ', ' + str(time_complexQuery2))
 
 # c. One update

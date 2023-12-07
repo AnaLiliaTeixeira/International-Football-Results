@@ -1,3 +1,4 @@
+import time
 from pymongo import MongoClient
 import pprint
 
@@ -65,11 +66,11 @@ complexQuery1 = [
         {
         "$group": {
             "_id": "$scorer",
-            "total_gols": { "$sum": 1 }
+            "total_goals": { "$sum": 1 }
         }
     },
     {
-        "$sort": { "total_gols": -1 } 
+        "$sort": { "total_goals": -1 } 
     },
     {
         "$limit": 5
@@ -128,24 +129,35 @@ for doc in result_simpleQuery2:
 explanaiton_simpleQuery2 = result_simpleQuery2.explain()
 pprint.pprint(explanaiton_simpleQuery2)
 
-# Index para a complex query 1 - Criação de índices para $lookup
-goalscores.create_index("match_id")
-goalscores.create_index("team_id")
-matches.create_index("tournament_id")
-matches.create_index("country_id")
+# Index para a complex query 1
+goalscores.create_index("match_id") # Criação de índices para $lookup
+goalscores.create_index("team_id") # Criação de índices para $lookup
+matches.create_index("tournament_id") # Criação de índices para $lookup
+matches.create_index("country_id") # Criação de índices para $lookup
+goalscores.create_index([("team.team_name", pymongo.ASCENDING), ("matches.tournament.tournament_name", pymongo.ASCENDING), ("matches.country.country_name", pymongo.ASCENDING)]) # Criação de index composto para $match
+goalscores.create_index([("scorer", pymongo.ASCENDING), ("total_gols", pymongo.DESCENDING)]) # Criação de index para $group e $sort
 
-# Criação de índice composto para $match
-goalscores.create_index([("team.team_name", pymongo.ASCENDING), ("matches.tournament.tournament_name", pymongo.ASCENDING), ("matches.country.country_name", pymongo.ASCENDING)])
+start_time_complexQuery1 = time.time()
+result_complexQuery1 = goalscores.aggregate(complexQuery1)
+end_time_complexQuery1 = time.time()
+for doc in result_complexQuery1:
+    pprint.pprint(doc)
+time_complexQuery1 = end_time_complexQuery1 - start_time_complexQuery1
 
-# Criação de índice para $group e $sort
-goalscores.create_index([("scorer", pymongo.ASCENDING), ("total_gols", pymongo.DESCENDING)])
+# Index para a complex query 2
+goalscores.create_index("match_id") # Criação de índices para $lookup
+goalscores.create_index("team_id") # Criação de índices para $lookup
+matches.create_index("tournament_id") # Criação de índices para $lookup
+matches.create_index("country_id") # Criação de índices para $lookup
+goalscores.create_index([("team.team_name", pymongo.ASCENDING), ("matches.tournament.tournament_name", pymongo.ASCENDING), ("matches.country.country_name", pymongo.ASCENDING)]) # Criação de index composto para $match
+goalscores.create_index([("scorer", pymongo.ASCENDING), ("total_gols", pymongo.DESCENDING)]) # Criação de index para $group e $sort
 
-# result_complexQuery1 = goalscores.aggregate(complexQuery1)
-# result_complexQuery1 = goalscores.find(complexQuery1)
-# for doc in result_complexQuery1:
-#     pprint.pprint(doc)
-# explanaiton_complexQuery1 = result_complexQuery1.explain()
-# pprint.pprint(explanaiton_complexQuery1)
+start_time_complexQuery2 = time.time()
+result_complexQuery2 = goalscores.aggregate(complexQuery2)
+end_time_complexQuery2 = time.time()
+for doc in result_complexQuery2:
+    pprint.pprint(doc)
+time_complexQuery2 = end_time_complexQuery2 - start_time_complexQuery2
 
-with open('performance_mongo.txt', 'a') as querys_archive:
-    querys_archive.write(', ' + str(explanaiton_simpleQuery1['executionStats']['executionTimeMillis'] / 1000) + ', ' + str(explanaiton_simpleQuery2['executionStats']['executionTimeMillis'] / 1000))
+with open('performance_mongo.csv', 'a') as querys_archive:
+    querys_archive.write(', ' + str(explanaiton_simpleQuery1['executionStats']['executionTimeMillis'] / 1000) + ', ' + str(explanaiton_simpleQuery2['executionStats']['executionTimeMillis'] / 1000) + ',' + str(time_complexQuery1) + ',' + str(time_complexQuery2))
