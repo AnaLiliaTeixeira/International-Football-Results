@@ -134,24 +134,18 @@ complexQuery2 = [
                 "as": "away_team"
                 }
     },
-    {"$lookup": {"from": "Goalscorers",
-                "localField": "match_id",
-                "foreignField": "_id",
-                "as": "goalscorers"
-                }
-    },
-    {"$group": {"_id": {"match_id": "$match_id",
-                        "date": "$date",
-                        "home_team": "$home_team.team_name",
-                        "away_team": "$away_team.team_name",
-                        "home_score": "$home_score",
-                        "away_score": "$away_score"
-                        },
-                "total_goals": {
-                    "$sum": {
-                    "$add": ["$home_score", "$away_score"]
-                    }
-                }}
+    {
+        "$group": {
+            "_id": "$_id",
+            "date": { "$first": "$date" },
+            "home_team": { "$first": "$home_team.team_name" },
+            "away_team": { "$first": "$away_team.team_name" },
+            "home_score": { "$first": "$home_score" },
+            "away_score": { "$first": "$away_score" },
+            "total_goals": {
+                "$sum": { "$add": ["$home_score", "$away_score"] }
+            }
+        }
     },
     {"$sort": {"total_goals": -1}}, 
     {"$limit": 5}
