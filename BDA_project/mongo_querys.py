@@ -1,3 +1,4 @@
+import time
 from pymongo import MongoClient
 import pprint
 
@@ -17,31 +18,35 @@ tournaments = db.tournaments
 
 #Query simples que irá obter todos os jogos que foram realizados em Lisbon, em 2023
 simpleQuery1 = { '$and': [ { 'city': "Lisbon" }, {'date': {"$regex": "2023"}} ] }
+
+start_time_simpleQuery1 = time.time()
 mydoc = matches.find(simpleQuery1)
-print("Matches in Lisbon in 2023:")
+end_time_simpleQuery1 = time.time()
+
+print("Matches in Lisbon in 2023:", end='')
 counter=0
 for doc in mydoc:
-#    pprint.pprint(doc)
+    pprint.pprint(doc)
     counter=counter+1
-print(counter)
+print(' ', counter, ' resultados')
+
+print("---------------------------------------Tempo total da operação de SimpleQuery1:", end_time_simpleQuery1 - start_time_simpleQuery1, 'segundos')
 
 simpleQuery2 = {'$and':[{'scorer': 'Cristiano Ronaldo'}, {'minute': {'$lt': 5}}]}
+
+start_time_simpleQuery2 = time.time()
 mydoc = goalscores.find(simpleQuery2)
-print("\nGolos que o Ronaldo marcou antes dos 5 minutos:")
+end_time_simpleQuery2 = time.time()
+
+print("\nGolos que o Ronaldo marcou antes dos 5 minutos:", end='')
 counter=0
 for doc in mydoc:
-#    pprint.pprint(doc)
+    pprint.pprint(doc)
     counter=counter+1
-print(counter)
+print(' ', counter, ' resultados')
+print("---------------------------------------Tempo total da operação de SimpleQuery2:", end_time_simpleQuery2 - start_time_simpleQuery2, 'segundos')
+
 # b. Two complex queries, using joins and aggregates, involving at least 2 tables/collections of your database (em que uma tem que ter mais do 5 joins)
-
-# aggregate the results for two queries: find all the scorer's names starting with A and count the repeats
-
-# este foi o exemplo que a prof deu na aula convém mudar um pouco
-# mydoc= goalscores.aggregate([{ "$match": { "scorer": {"$regex": "^A"} } },
-#                              {"$group" : {"_id" : "$scorer", "count repeats" : {"$sum" : 1} }}])
-            
-
 
 #COMPLEX QUERY1: Top 5 jogadores (scorer), de Portugal(team), que tem mais golos no torneio: FIFA World Cup Qualification, 
 # cujo os jogos foram realizados em Portugal 
@@ -101,68 +106,58 @@ complexQuery1 = [
     }
 ]
 
-
+start_time_complexQuery1 = time.time()
 result = goalscores.aggregate(complexQuery1)
+end_time_complexQuery1 = time.time()
+
+print("\nResultado da complex query 1:")
 pprint.pprint(list(result))
+print("---------------------------------------Tempo total da operação de ComplexQuery1:", end_time_complexQuery1 - start_time_complexQuery1, 'segundos')
 
-
- #Complex Query 2
+#Complex Query 2
 complexQuery2 = [
-    {
-        "$lookup": {
-            "from": "teams",
-            "localField": "home_team_id",
-            "foreignField": "_id",
-            "as": "home_team"
-        }
-    },
-    {
-        "$lookup": {
-            "from": "teams",
-            "localField": "away_team_id",
-            "foreignField": "_id",
-            "as": "away_team"
-        }
-    },
-    {
-        "$lookup": {
-            "from": "Goalscorers",
-            "localField": "match_id",
-            "foreignField": "_id",
-            "as": "goalscorers"
-        }
-    },
-    {
-        "$group": {
-            "_id": {
-                "match_id": "$match_id",
-                "date": "$date",
-                "home_team": "$home_team.team_name",
-                "away_team": "$away_team.team_name",
-                "home_score": "$home_score",
-                "away_score": "$away_score"
-            },
-            "total_goals": {
-                "$sum": {
-                "$add": ["$home_score", "$away_score"]
+    {"$lookup": {"from": "teams",
+                "localField": "home_team_id",
+                "foreignField": "_id",
+                "as": "home_team"
                 }
-            }
-        }
     },
-    {
-    "$sort": {
-      "total_goals": -1 
-    }
-    }, 
-    {
-        "$limit": 5
-    }
+    {"$lookup": {"from": "teams",
+                "localField": "away_team_id",
+                "foreignField": "_id",
+                "as": "away_team"
+                }
+    },
+    {"$lookup": {"from": "Goalscorers",
+                "localField": "match_id",
+                "foreignField": "_id",
+                "as": "goalscorers"
+                }
+    },
+    {"$group": {"_id": {"match_id": "$match_id",
+                        "date": "$date",
+                        "home_team": "$home_team.team_name",
+                        "away_team": "$away_team.team_name",
+                        "home_score": "$home_score",
+                        "away_score": "$away_score"
+                        },
+                "total_goals": {
+                    "$sum": {
+                    "$add": ["$home_score", "$away_score"]
+                    }
+                }}
+    },
+    {"$sort": {"total_goals": -1}}, 
+    {"$limit": 5}
 ]
 
+start_time_complexQuery2 = time.time()
 result2 = matches.aggregate(complexQuery2)
-print()
-print("Complex query 2:")
+end_time_complexQuery2 = time.time()
+
+print("\nResultado da complex query 2:")
 pprint.pprint(list(result2))
+print("---------------------------------------Tempo total da operação de ComplexQuery2:", end_time_complexQuery2 - start_time_complexQuery2, 'segundos')
 
 # c. One update
 updateQuery = {'date':'1882-02-18'}
@@ -170,7 +165,7 @@ newvalues = {"$set": {'home_score': 3, 'away_score': 12, 'home_team': teams.find
 matches.update_one(updateQuery, newvalues)
 
 updated = matches.find({'date': '1882-02-18'})
-print("Matches updated:")
+print("\nMatches updated:")
 for doc in updated:
     pprint.pprint(doc)
 
@@ -183,3 +178,5 @@ matches.insert_one({'date':'2023-11-30', 'home_team': teams.find_one({'team_name
 goalscores.insert_one({'match': matches.find_one({'date':'2023-11-30'}), 'team': teams.find_one({'team_name': 'BDA2324_4_team1'})['_id'], 'scorer':'Tomas Piteira', 'minute': 44, 'own_goal':'false', 'penalty':'false'})
 goalscores.insert_one({'match': matches.find_one({'date':'2023-11-30'}), 'team': teams.find_one({'team_name': 'BDA2324_4_team2'})['_id'], 'scorer':'Daniel Lopes', 'minute': 45, 'own_goal':'false', 'penalty':'false'})
 shootouts.insert_one({'match': matches.find_one({'date':'2023-11-30'}), 'winner': teams.find_one({'team_name': 'BDA2324_4_team2'})['_id'], 'first_shooter':teams.find_one({'team_name': 'BDA2324_4_team1'})['_id']})
+
+print("\nInserted new data")
