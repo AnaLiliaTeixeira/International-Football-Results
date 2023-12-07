@@ -14,6 +14,9 @@ matches = db.matches
 countries = db.countries
 tournaments = db.tournaments
 
+with open('performance_mongo.txt', 'w') as querys_archive:
+    querys_archive.write("Simple Query1 BO, Simple Query2 BO, ComplexQuery1 BO, ComplexQuery2 BO, Simple Query1 AO, Simple Query2 AO, ComplexQuery1 AO, ComplexQuery2 AO\n")
+
 # a. Two simples queries, selecting data from one or two columns/fields
 
 #Query simples que irá obter todos os jogos que foram realizados em Lisbon, em 2023
@@ -30,7 +33,8 @@ for doc in mydoc:
     counter=counter+1
 print(' ', counter, ' resultados')
 
-print("---------------------------------------Tempo total da operação de SimpleQuery1:", end_time_simpleQuery1 - start_time_simpleQuery1, 'segundos')
+time_simpleQuery1 = end_time_simpleQuery1 - start_time_simpleQuery1
+print("---------------------------------------Tempo total da operação de SimpleQuery1:", time_simpleQuery1 , 'segundos')
 
 simpleQuery2 = {'$and':[{'scorer': 'Cristiano Ronaldo'}, {'minute': {'$lt': 5}}]}
 
@@ -44,7 +48,8 @@ for doc in mydoc:
     pprint.pprint(doc)
     counter=counter+1
 print(' ', counter, ' resultados')
-print("---------------------------------------Tempo total da operação de SimpleQuery2:", end_time_simpleQuery2 - start_time_simpleQuery2, 'segundos')
+time_simpleQuery2 = end_time_simpleQuery2 - start_time_simpleQuery2
+print("---------------------------------------Tempo total da operação de SimpleQuery2:", time_simpleQuery2, 'segundos')
 
 # b. Two complex queries, using joins and aggregates, involving at least 2 tables/collections of your database (em que uma tem que ter mais do 5 joins)
 
@@ -112,7 +117,8 @@ end_time_complexQuery1 = time.time()
 
 print("\nResultado da complex query 1:")
 pprint.pprint(list(result))
-print("---------------------------------------Tempo total da operação de ComplexQuery1:", end_time_complexQuery1 - start_time_complexQuery1, 'segundos')
+time_complexQuery1 = end_time_complexQuery1 - start_time_complexQuery1
+print("---------------------------------------Tempo total da operação de ComplexQuery1:", time_complexQuery1, 'segundos')
 
 #Complex Query 2
 complexQuery2 = [
@@ -157,7 +163,10 @@ end_time_complexQuery2 = time.time()
 
 print("\nResultado da complex query 2:")
 pprint.pprint(list(result2))
-print("---------------------------------------Tempo total da operação de ComplexQuery2:", end_time_complexQuery2 - start_time_complexQuery2, 'segundos')
+time_complexQuery2 = end_time_complexQuery2 - start_time_complexQuery2
+print("---------------------------------------Tempo total da operação de ComplexQuery2:", time_complexQuery2, 'segundos')
+with open('performance_mongo.txt', 'a') as querys_archive:
+    querys_archive.write(str(time_simpleQuery1) + ', ' + str(time_simpleQuery2) + ', ' + str(time_complexQuery1) + ', ' + str(time_complexQuery2))
 
 # c. One update
 updateQuery = {'date':'1882-02-18'}
