@@ -130,5 +130,5 @@ for doc in result_complexQuery2:
 time_complexQuery2 = end_time_complexQuery2 - start_time_complexQuery2
 print("---------------------------------------Tempo total da operação de ComplexQuery2:", time_complexQuery2, 'segundos')
 
-with open('performance_mongo_ao.csv', 'a') as querys_archive:
+with open('after_optimization/performance_mongo_ao.csv', 'a') as querys_archive:
     querys_archive.write(', ' + str("{:.7f}".format(time_simpleQuery1)) + ', ' + str("{:.7f}".format(time_simpleQuery2)) + ', ' + str(time_complexQuery1) + ', ' + str(time_complexQuery2))
