@@ -43,3 +43,37 @@ Tabela Countries:
 
 country_id (Chave Primária, Inteiro Auto-Incremento)
 country_name (Texto)
+
+---------OPTIMIZATION--------
+
+_____________________________________
+Tabela Matches:
+
+match_id (Chave Primária, Inteiro Auto-Incremento)
+date (Data)
+home_team (Texto)
+away_team (Texto)
+home_score (Inteiro)
+away_score (Inteiro)
+tournament (Texto)
+city (Texto)
+country (Texto)
+neutral (Booleano)
+---------------------
+Tabela Shootouts:
+
+shootout_id (Chave Primária, Inteiro Auto-Incremento)
+match_id (Chave Estrangeira referenciando Matches)
+winner (Texto)
+first_shooter (Texto)
+---------------------
+Tabela Goalscorers:
+
+goal_id (Chave Primária, Inteiro Auto-Incremento)
+match_id (Chave Estrangeira referenciando Matches)
+team (Texto)
+scorer (Texto)
+minute (int)
+own_goal (Booleano)
+penalty (Booleano)
+---------------------

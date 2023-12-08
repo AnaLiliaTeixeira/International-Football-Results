@@ -214,3 +214,4 @@ goalscorers_insert_query = "INSERT INTO Goalscorers (match_id, team_id, scorer, 
 mycursor.executemany(goalscorers_insert_query, df_goalscores_list)
 mydb.commit()
 print("The values of Goalscorers were inserted!")
+mydb.close()

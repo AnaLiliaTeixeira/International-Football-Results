@@ -155,4 +155,6 @@ print("-----------INSERT-----------")
 end_time_insert = time.time()
 print("--------------------------------------------Tempo de todos os INSERT:", end_time_insert - start_time_insert)
 mydb.commit()
+mydb.close()
+
 
