@@ -8,7 +8,6 @@ data_shootouts = json.load(open("bd_json_files/shootouts.json"))
 data_results = json.load(open("bd_json_files/results.json"))
 
 ############################Mongo######################
-client=MongoClient()
 client = MongoClient('localhost', 27017)
 client.drop_database("BDA2324_4_OP")
 

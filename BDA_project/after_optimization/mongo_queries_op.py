@@ -14,8 +14,8 @@ matches = db.matches
 countries = db.countries
 tournaments = db.tournaments
 
-with open('performance_mongo.txt', 'w') as querys_archive:
-    querys_archive.write("Simple Query1 BO, Simple Query2 BO, ComplexQuery1 BO, ComplexQuery2 BO, Simple Query1 AO, Simple Query2 AO, ComplexQuery1 AO, ComplexQuery2 AO\n")
+with open('performance_mongo_ao.csv', 'w') as querys_archive:
+    querys_archive.write("Simple Query1, Simple Query2, ComplexQuery1, ComplexQuery2, Simple Query1 indexing, Simple Query2 indexing, ComplexQuery1 indexing, ComplexQuery2 indexing\n")
 
 # a. Two simples queries, selecting data from one or two columns/fields
 
@@ -130,7 +130,7 @@ print("\nResultado da complex query 2:")
 pprint.pprint(list(result2))
 time_complexQuery2 = end_time_complexQuery2 - start_time_complexQuery2
 print("---------------------------------------Tempo total da operação de ComplexQuery2:", time_complexQuery2, 'segundos')
-with open('performance_mongo.txt', 'a') as querys_archive:
+with open('performance_mongo_ao.csv', 'a') as querys_archive:
     querys_archive.write(str(time_simpleQuery1) + ', ' + str(time_simpleQuery2) + ', ' + str(time_complexQuery1) + ', ' + str(time_complexQuery2))
 
 print("\nInserted new data")
