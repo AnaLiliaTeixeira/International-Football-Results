@@ -14,9 +14,6 @@ matches = db.matches
 countries = db.countries
 tournaments = db.tournaments
 
-with open('after_optimization/performance_mongo_ao.csv', 'w') as querys_archive:
-    querys_archive.write("Simple Query1, Simple Query2, ComplexQuery1, ComplexQuery2, Simple Query1 indexing, Simple Query2 indexing, ComplexQuery1 indexing, ComplexQuery2 indexing\n")
-
 # a. Two simples queries, selecting data from one or two columns/fields
 
 #Query simples que irá obter todos os jogos que foram realizados em Lisbon, em 2023
@@ -80,7 +77,7 @@ complexQuery1 = [
         }
     },
     {
-        "$sort": { "total_gols": -1 } 
+        "$sort": { "total_goals": -1 } 
     },
     {
         "$limit": 5
