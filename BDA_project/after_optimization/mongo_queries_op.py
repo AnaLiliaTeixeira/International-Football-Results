@@ -5,7 +5,7 @@ import pprint
 client=MongoClient()
 client = MongoClient('localhost', 27017)
 
-db = client.BDA2324_4
+db = client.BDA2324_4_OP
 
 goalscores = db.goalscores
 shootouts = db.shootouts
@@ -14,8 +14,8 @@ matches = db.matches
 countries = db.countries
 tournaments = db.tournaments
 
-with open('performance_mongo.csv', 'w') as querys_archive:
-    querys_archive.write("Simple Query1 BO, Simple Query2 BO, ComplexQuery1 BO, ComplexQuery2 BO, Simple Query1 AO, Simple Query2 AO, ComplexQuery1 AO, ComplexQuery2 AO\n")
+with open('after_optimization/performance_mongo_ao.csv', 'w') as querys_archive:
+    querys_archive.write("Simple Query1, Simple Query2, ComplexQuery1, ComplexQuery2, Simple Query1 indexing, Simple Query2 indexing, ComplexQuery1 indexing, ComplexQuery2 indexing\n")
 
 # a. Two simples queries, selecting data from one or two columns/fields
 
@@ -67,44 +67,20 @@ complexQuery1 = [
         }
     },
     {
-        "$lookup": {
-            "from": "teams",
-            "localField": "team_id",
-            "foreignField": "_id",
-            "as": "team"
-        }
-    },
-    {
-        "$lookup": {
-            "from": "tournaments",
-            "localField": "match.tournament_id",
-            "foreignField": "_id",
-            "as": "tournament"
-        }
-    },
-    {
-        "$lookup": {
-            "from": "countries",
-            "localField": "match.country_id",
-            "foreignField": "_id",
-            "as": "country"
-        }
-    },
-    {
         "$match": {
-            "team.team_name": "Portugal",
-            'tournament.tournament_name': 'FIFA World Cup qualification',
-            "country.country_name": "Portugal"
+            'match.tournament': 'FIFA World Cup qualification',
+            'match.country': 'Portugal',
+            'team': 'Portugal'
         }
     },
         {
         "$group": {
             "_id": "$scorer",
-            "total_goals": { "$sum": 1 }
+            "total_gols": { "$sum": 1 }
         }
     },
     {
-        "$sort": { "total_goals": -1 } 
+        "$sort": { "total_gols": -1 } 
     },
     {
         "$limit": 5
@@ -122,24 +98,19 @@ print("---------------------------------------Tempo total da operação de Compl
 
 #Complex Query 2
 complexQuery2 = [
-    {"$lookup": {"from": "teams",
-                "localField": "home_team_id",
+    
+    {"$lookup": {"from": "Goalscorers",
+                "localField": "match_ids",
                 "foreignField": "_id",
-                "as": "home_team"
-                }
-    },
-    {"$lookup": {"from": "teams",
-                "localField": "away_team_id",
-                "foreignField": "_id",
-                "as": "away_team"
+                "as": "goalscorers"
                 }
     },
     {
         "$group": {
             "_id": "$_id",
             "date": { "$first": "$date" },
-            "home_team": { "$first": "$home_team.team_name" },
-            "away_team": { "$first": "$away_team.team_name" },
+            "home_team": { "$first": "$home_team" },
+            "away_team": { "$first": "$away_team" },
             "home_score": { "$first": "$home_score" },
             "away_score": { "$first": "$away_score" },
             "total_goals": {
@@ -159,27 +130,7 @@ print("\nResultado da complex query 2:")
 pprint.pprint(list(result2))
 time_complexQuery2 = end_time_complexQuery2 - start_time_complexQuery2
 print("---------------------------------------Tempo total da operação de ComplexQuery2:", time_complexQuery2, 'segundos')
-with open('performance_mongo.csv', 'a') as querys_archive:
+with open('after_optimization/performance_mongo_ao.csv', 'a') as querys_archive:
     querys_archive.write(str(time_simpleQuery1) + ', ' + str(time_simpleQuery2) + ', ' + str(time_complexQuery1) + ', ' + str(time_complexQuery2))
-
-# c. One update
-updateQuery = {'date':'1882-02-18'}
-newvalues = {"$set": {'home_score': 3, 'away_score': 12, 'home_team': teams.find_one({'team_name': 'Myanmar'})['_id']} }
-matches.update_one(updateQuery, newvalues)
-
-updated = matches.find({'date': '1882-02-18'})
-print("\nMatches updated:")
-for doc in updated:
-    pprint.pprint(doc)
-
-# d. One insert
-teams.insert_one({'team_name': 'BDA2324_4_team1'})
-teams.insert_one({'team_name': 'BDA2324_4_team2'})
-tournaments.insert_one({'tournament_name': 'BDA2324_4_tournament'})
-countries.insert_one({'country_name': 'BDA2324_4_country'})
-matches.insert_one({'date':'2023-11-30', 'home_team': teams.find_one({'team_name': 'BDA2324_4_team1'})['_id'], 'away_team': teams.find_one({'team_name': 'BDA2324_4_team2'})['_id'], 'home_score': 1, 'away_score': 1, 'tournament': tournaments.find_one({'tournament_name': 'BDA2324_4_tournament'})['_id'], 'city': 'Lisbon', 'country': countries.find_one({'country_name': 'BDA2324_4_country'})['_id'], 'neutral': False})
-goalscores.insert_one({'match': matches.find_one({'date':'2023-11-30'}), 'team': teams.find_one({'team_name': 'BDA2324_4_team1'})['_id'], 'scorer':'Tomas Piteira', 'minute': 44, 'own_goal':'false', 'penalty':'false'})
-goalscores.insert_one({'match': matches.find_one({'date':'2023-11-30'}), 'team': teams.find_one({'team_name': 'BDA2324_4_team2'})['_id'], 'scorer':'Daniel Lopes', 'minute': 45, 'own_goal':'false', 'penalty':'false'})
-shootouts.insert_one({'match': matches.find_one({'date':'2023-11-30'}), 'winner': teams.find_one({'team_name': 'BDA2324_4_team2'})['_id'], 'first_shooter':teams.find_one({'team_name': 'BDA2324_4_team1'})['_id']})
 
 print("\nInserted new data")
