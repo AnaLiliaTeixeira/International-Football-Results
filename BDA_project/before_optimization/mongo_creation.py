@@ -7,7 +7,7 @@ data_goalscores = json.load(open("bd_json_files/goalscorers.json"))
 data_shootouts = json.load(open("bd_json_files/shootouts.json"))
 data_results = json.load(open("bd_json_files/results.json"))
 
-############################Mongo######################
+
 client=MongoClient()
 client = MongoClient('localhost', 27017)
 client.drop_database("BDA2324_4")
@@ -21,7 +21,7 @@ matches = db.matches
 countries = db.countries
 tournaments = db.tournaments
 
-#Inserir dados na tabela teams
+
 all_teams = pd.concat([df_results['home_team'], df_results['away_team']])
 all_teams = pd.Series(all_teams)
 unique_teams = all_teams.drop_duplicates().to_list()
@@ -30,7 +30,7 @@ team_data = teams.find()
 team_id_mapping = {team_doc['team_name']: team_doc['_id'] for team_doc in team_data}
 print("Inserted teams")
 
-#Atualizar as colunas que contêm teams para terem o id do team
+
 df_results['home_team'] = df_results['home_team'].map(team_id_mapping)
 df_results = df_results.rename(columns={'home_team': 'home_team_id'})
 df_results['away_team'] = df_results['away_team'].map(team_id_mapping)
@@ -50,31 +50,30 @@ df_shootouts = df_shootouts.rename(columns={'winner': 'winner_id'})
 df_shootouts['first_shooter'] = df_shootouts['first_shooter'].map(team_id_mapping)
 df_shootouts = df_shootouts.rename(columns={'first_shooter': 'first_shooter_id'})
 
-#Inserir dados na tabela tournaments
 all_tournaments = df_results['tournament']
 tournaments_ids = tournaments.insert_many([{'tournament_name' : tournament} for tournament in all_tournaments])
 
-#Atualizar as colunas que contêm tournaments para terem o id do tournament
+
 tournaments_data = tournaments.find()
 tournament_id_mapping = {tournament_doc['tournament_name']: tournament_doc['_id'] for tournament_doc in tournaments_data}
 df_results['tournament'] = df_results['tournament'].map(tournament_id_mapping)
 df_results = df_results.rename(columns={'tournament': 'tournament_id'})
 print("Inserted tournaments")
 
-#Inserir dados na tabela countries
+
 all_countries = df_results['country']
 all_countries = pd.Series(all_countries)
 unique_countries = all_countries.drop_duplicates().to_list()
 countries.insert_many([{'country_name' : country} for country in unique_countries])
 
-#Atualizar as colunas que contêm countries para terem o id do country
+
 countries_data = countries.find()
 countries_id_mapping = {country_doc['country_name']: country_doc['_id'] for country_doc in countries_data}
 df_results['country'] = df_results['country'].map(countries_id_mapping)
 df_results = df_results.rename(columns={'country': 'country_id'})
 print("Inserted countries")
 
-#Inserir dados na tabela matches
+
 matches_data = df_results.to_dict(orient='records')
 matches.insert_many(matches_data)
 
@@ -83,7 +82,7 @@ matches_id_mapping = {(doc['date'], doc['home_team_id'], doc['away_team_id']): d
 print("Inserted matches")
 
 
-#Inserir dados na tabela shootouts
+
 df_shootouts['match_id'] = df_shootouts.apply(lambda row: matches_id_mapping.get((row['date'], row['home_team_id'], row['away_team_id']))['_id'], axis=1)
 colunas_para_remover = ['date', 'home_team_id', 'away_team_id']
 df_shootouts = df_shootouts.drop(colunas_para_remover, axis=1)
@@ -95,7 +94,7 @@ shootouts_data = df_shootouts.to_dict(orient='records')
 shootouts.insert_many(shootouts_data)
 print("Inserted shootouts")
 
-#Inserir dados na tabela goalscores
+
 df_goalscores['match_id'] = df_goalscores.apply(lambda row: matches_id_mapping.get((row['date'], row['home_team_id'], row['away_team_id']))['_id'], axis=1)
 colunas_para_remover = ['date', 'home_team_id', 'away_team_id']
 df_goalscores = df_goalscores.drop(colunas_para_remover, axis=1)
