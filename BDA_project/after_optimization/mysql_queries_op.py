@@ -10,31 +10,34 @@ mydb = mysql.connector.connect(
 )
 mycursor = mydb.cursor()
 
+    
 print("----First Simple Query----")
 # a. Two simples queries, selecting data from one or two columns/fields
 # Query simples que irá obter todos os jogos que foram realizados em Lisbon, em 2023
-query = f'SELECT * FROM Matches WHERE city = "Lisbon" AND YEAR(date) = 2023;'
+query1 = f'SELECT * FROM Matches WHERE city = "Lisbon" AND YEAR(date) = 2023;'
 start_time = time.time()
-mycursor.execute(query)
+mycursor.execute(query1)
 games_result = mycursor.fetchall()
 end_time = time.time()
+time1 = end_time - start_time
 for row in games_result:
     print(row)
-print("--------------------------------------------Tempo - Query Simples 1:", end_time - start_time)
+print("--------------------------------------------Tempo - Query Simples 1:", time1)
 
     
     
 print("----Second Simple Query----")
 # a. Two simples queries, selecting data from one or two columns/fields
 # Query simples que irá obter todos os jogos que foram realizados em Lisbon, em 2023
-query = f'SELECT * FROM Goalscorers WHERE scorer = "Cristiano Ronaldo" AND minute<5;'
+query2 = f'SELECT * FROM Goalscorers WHERE scorer = "Cristiano Ronaldo" AND minute<5;'
 start_time = time.time()
-mycursor.execute(query)
+mycursor.execute(query2)
 games_result = mycursor.fetchall()
 end_time = time.time()
+time2 = end_time - start_time
 for row in games_result:
     print(row)
-print("--------------------------------------------Tempo - Query Simples 2:", end_time - start_time)
+print("--------------------------------------------Tempo - Query Simples 2:", time2)
 
 
 
@@ -46,7 +49,7 @@ print("----First Complex Query----")
 # cujo os jogos foram realizados em Portugal
 # e que esses jogos podem ter ido ou não a disputa de penaltys.
 # ----------------------
-query = """SELECT gs.scorer, COUNT(gs.scorer) AS total_gols
+query3 = """SELECT gs.scorer, COUNT(gs.scorer) AS total_gols
         FROM Goalscorers gs
         JOIN Matches m ON gs.match_id = m.match_id
         LEFT JOIN Shootouts s ON s.match_id = m.match_id
@@ -57,31 +60,31 @@ query = """SELECT gs.scorer, COUNT(gs.scorer) AS total_gols
         ORDER BY total_gols DESC
         LIMIT 5;"""
 start_time = time.time()
-mycursor.execute(query)
+mycursor.execute(query3)
 query_result = mycursor.fetchall()
 end_time = time.time()
+time3 = end_time - start_time
 for row in query_result:
     print(row)
-print("--------------------------------------------Tempo - Query Complexa 1:", end_time - start_time)
+print("--------------------------------------------Tempo - Query Complexa 1:", time3)
 
 print("----Second Complex Query----")
-query = """ SELECT Matches.match_id, Matches.date, Matches.home_team, Matches.away_team,
+query4 = """ SELECT Matches.match_id, Matches.date, Matches.home_team, Matches.away_team,
         Matches.home_score, Matches.away_score,
-        COUNT(Goalscorers.goal_id) AS total_goals
+        CAST(SUM(Matches.home_score + Matches.away_score) AS UNSIGNED) AS total_goals
         FROM Matches
-        LEFT JOIN Goalscorers ON Matches.match_id = Goalscorers.match_id
         GROUP BY Matches.match_id, Matches.date, home_team, away_team, Matches.home_score, Matches.away_score
         ORDER BY total_goals DESC
         LIMIT 5;"""
 
 start_time = time.time()
-mycursor.execute(query)
+mycursor.execute(query4)
 query_result = mycursor.fetchall()
 end_time = time.time()
+time4 = end_time - start_time
 for row in query_result:
     print(row)
-print("--------------------------------------------Tempo - Query Complexa 2:", end_time - start_time)
-
+print("--------------------------------------------Tempo - Query Complexa 2:", time4)
 
 # c. One update
 print("-----------UPDATED---------")
@@ -120,8 +123,6 @@ print("--------------------------------------------Tempo  do Select após UPDATE
 total_time_update = end_time_select_after_update - start_time_select_before_update
 print("--------------------------------------------Tempo total das operações de UPDATE:", total_time_update)
 
-
-
 # Insert one
 start_time_insert = time.time()
 query = "INSERT INTO Matches (date, home_team, away_team, home_score, away_score, tournament, city, country, neutral) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
@@ -140,5 +141,3 @@ end_time_insert = time.time()
 print("--------------------------------------------Tempo de todos os INSERT:", end_time_insert - start_time_insert)
 mydb.commit()
 mydb.close()
-
-

@@ -13,40 +13,42 @@ mycursor = mydb.cursor()
 print("----First Simple Query----")
 # a. Two simples queries, selecting data from one or two columns/fields
 # Query simples que irá obter todos os jogos que foram realizados em Lisbon, em 2023
-query = f'SELECT * FROM Matches WHERE city = "Lisbon" AND YEAR(date) = 2023;'
+query1 = f'SELECT * FROM Matches WHERE city = "Lisbon" AND YEAR(date) = 2023;'
 start_time = time.time()
-mycursor.execute(query)
+mycursor.execute(query1)
 games_result = mycursor.fetchall()
 end_time = time.time()
+time1=end_time - start_time
 for row in games_result:
     print(row)
-print("--------------------------------------------Tempo - Query Simples 1:", end_time - start_time)
+print("--------------------------------------------Tempo - Query Simples 1:", time1)
 
     
     
 print("----Second Simple Query----")
 # a. Two simples queries, selecting data from one or two columns/fields
-# Query simples que irá obter todos os jogos que foram realizados em Lisbon, em 2023
-query = f'SELECT * FROM Goalscorers WHERE scorer = "Cristiano Ronaldo" AND minute<5;'
+# Query simples que irá obter todos os golos marcados por Cristiano Ronaldo antes dos primeiros 5 minutos de jogo
+query2 = f'SELECT * FROM Goalscorers WHERE scorer = "Cristiano Ronaldo" AND minute<5;'
 start_time = time.time()
-mycursor.execute(query)
+mycursor.execute(query2)
 games_result = mycursor.fetchall()
 end_time = time.time()
+time2=end_time - start_time
 for row in games_result:
     print(row)
-print("--------------------------------------------Tempo - Query Simples 2:", end_time - start_time)
+print("--------------------------------------------Tempo - Query Simples 2:",time2)
 
 
 
 print("----First Complex Query----")
 # b. Two queries, using joins and aggregates, involving at least 2 tables/collections of your database (em que uma tem que ter mais do 5 joins)
-# COMPLEX QUERY b.1: Top 5 jogadores (scorer),
+# COMPLEX QUERY b.1: Top 5 jogadores (scorer) descrescente,
 # de Portugal(team),
 # que tem mais golos no torneio: FIFA World Cup Qualification,
 # cujo os jogos foram realizados em Portugal
 # e que esses jogos podem ter ido ou não a disputa de penaltys.
 # ----------------------
-query = """SELECT gs.scorer, COUNT(gs.scorer) AS total_gols
+query3 = """SELECT gs.scorer, COUNT(gs.scorer) AS total_gols
         FROM Goalscorers gs
         JOIN Matches m ON gs.match_id = m.match_id
         LEFT JOIN Shootouts s ON s.match_id = m.match_id
@@ -60,34 +62,32 @@ query = """SELECT gs.scorer, COUNT(gs.scorer) AS total_gols
         ORDER BY total_gols DESC
         LIMIT 5;"""
 start_time = time.time()
-mycursor.execute(query)
+mycursor.execute(query3)
 query_result = mycursor.fetchall()
 end_time = time.time()
+time3=end_time - start_time
 for row in query_result:
     print(row)
-print("--------------------------------------------Tempo - Query Complexa 1:", end_time - start_time)
-
+print("--------------------------------------------Tempo - Query Complexa 1:", time3)
+# Query Complexa que irá obter os primeiros 5 jogos por ordem decrescente em que foram marcados mais golos.
 print("----Second Complex Query----")
-query = """ SELECT Matches.match_id, Matches.date, Teams.team_name AS home_team, TeamsAway.team_name AS away_team,
+query4 = """ SELECT Matches.match_id, Matches.date, Teams.team_name AS home_team, TeamsAway.team_name AS away_team,
         Matches.home_score, Matches.away_score,
-        COUNT(Goalscorers.goal_id) AS total_goals
+        CAST(SUM(Matches.home_score + Matches.away_score) AS UNSIGNED) AS total_goals
         FROM Matches
         JOIN Teams ON Matches.home_team_id = Teams.team_id
         JOIN Teams AS TeamsAway ON Matches.away_team_id = TeamsAway.team_id
-        LEFT JOIN Goalscorers ON Matches.match_id = Goalscorers.match_id
         GROUP BY Matches.match_id, Matches.date, home_team, away_team, Matches.home_score, Matches.away_score
         ORDER BY total_goals DESC
         LIMIT 5;"""
-
 start_time = time.time()
-mycursor.execute(query)
+mycursor.execute(query4)
 query_result = mycursor.fetchall()
 end_time = time.time()
+time4=end_time - start_time
 for row in query_result:
     print(row)
-print("--------------------------------------------Tempo - Query Complexa 2:", end_time - start_time)
-
-
+print("--------------------------------------------Tempo - Query Complexa 2:", time4)
 # c. One update
 print("-----------UPDATED---------")
 print("--Select Before Updated----")
