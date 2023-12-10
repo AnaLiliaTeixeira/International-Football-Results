@@ -141,9 +141,10 @@ for doc in updated:
     pprint.pprint(doc)
 
 # d. One insert
-matches.insert_one({'date':'2023-11-30', 'home_team': 'BDA2324_4_team1', 'away_team': 'BDA2324_4_team2', 'home_score': 1, 'away_score': 1, 'tournament': 'BDA2324_4_tournament', 'city': 'Lisbon', 'country': 'BDA2324_4_country', 'neutral': False})
-goalscores.insert_one({'match': matches.find_one({'date':'2023-11-30'}), 'team': 'BDA2324_4_team1', 'scorer':'Tomas Piteira', 'minute': 44, 'own_goal':'false', 'penalty':'false'})
-goalscores.insert_one({'match': matches.find_one({'date':'2023-11-30'}), 'team': 'BDA2324_4_team2', 'scorer':'Daniel Lopes', 'minute': 45, 'own_goal':'false', 'penalty':'false'})
-shootouts.insert_one({'match': matches.find_one({'date':'2023-11-30'}), 'winner': 'BDA2324_4_team2', 'first_shooter': 'BDA2324_4_team1'})
+match_id = matches.insert_one({'date':'2023-11-30', 'home_team': 'BDA2324_4_team1', 'away_team': 'BDA2324_4_team2', 'home_score': 1, 'away_score': 1, 'tournament': 'BDA2324_4_tournament', 'city': 'Lisbon', 'country': 'BDA2324_4_country', 'neutral': False})
+print("PRINTTTTT MATCH IDDDDD", match_id.inserted_id)
+goalscores.insert_one({'match_id': match_id.inserted_id, 'team': 'BDA2324_4_team1', 'scorer':'Tomas Piteira', 'minute': 44, 'own_goal':'false', 'penalty':'false'})
+goalscores.insert_one({'match_id': match_id.inserted_id, 'team': 'BDA2324_4_team2', 'scorer':'Daniel Lopes', 'minute': 45, 'own_goal':'false', 'penalty':'false'})
+shootouts.insert_one({'match_id': match_id.inserted_id, 'winner': 'BDA2324_4_team2', 'first_shooter': 'BDA2324_4_team1'})
 
 print("\nInserted new data")

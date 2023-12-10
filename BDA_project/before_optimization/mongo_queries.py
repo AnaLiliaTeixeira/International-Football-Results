@@ -173,13 +173,13 @@ for doc in updated:
     pprint.pprint(doc)
 
 # d. One insert
-teams.insert_one({'team_name': 'BDA2324_4_team1'})
-teams.insert_one({'team_name': 'BDA2324_4_team2'})
-tournaments.insert_one({'tournament_name': 'BDA2324_4_tournament'})
-countries.insert_one({'country_name': 'BDA2324_4_country'})
-matches.insert_one({'date':'2023-11-30', 'home_team': teams.find_one({'team_name': 'BDA2324_4_team1'})['_id'], 'away_team': teams.find_one({'team_name': 'BDA2324_4_team2'})['_id'], 'home_score': 1, 'away_score': 1, 'tournament': tournaments.find_one({'tournament_name': 'BDA2324_4_tournament'})['_id'], 'city': 'Lisbon', 'country': countries.find_one({'country_name': 'BDA2324_4_country'})['_id'], 'neutral': False})
-goalscores.insert_one({'match': matches.find_one({'date':'2023-11-30'}), 'team': teams.find_one({'team_name': 'BDA2324_4_team1'})['_id'], 'scorer':'Tomas Piteira', 'minute': 44, 'own_goal':'false', 'penalty':'false'})
-goalscores.insert_one({'match': matches.find_one({'date':'2023-11-30'}), 'team': teams.find_one({'team_name': 'BDA2324_4_team2'})['_id'], 'scorer':'Daniel Lopes', 'minute': 45, 'own_goal':'false', 'penalty':'false'})
-shootouts.insert_one({'match': matches.find_one({'date':'2023-11-30'}), 'winner': teams.find_one({'team_name': 'BDA2324_4_team2'})['_id'], 'first_shooter':teams.find_one({'team_name': 'BDA2324_4_team1'})['_id']})
+team_id_1 = teams.insert_one({'team_name': 'BDA2324_4_team1'})
+team_id_2 = teams.insert_one({'team_name': 'BDA2324_4_team2'})
+tournament_id = tournaments.insert_one({'tournament_name': 'BDA2324_4_tournament'})
+country_id = countries.insert_one({'country_name': 'BDA2324_4_country'})
+match_id = matches.insert_one({'date':'2023-11-30', 'home_team_id': team_id_1.inserted_id, 'away_team_id': team_id_2.inserted_id, 'home_score': 1, 'away_score': 1, 'tournament_id': tournament_id.inserted_id, 'city': 'Lisbon', 'country_id': country_id.inserted_id, 'neutral': False})
+goalscores.insert_one({'match_id': match_id.inserted_id, 'team_id': team_id_1.inserted_id, 'scorer':'Tomas Piteira', 'minute': 44, 'own_goal':'false', 'penalty':'false'})
+goalscores.insert_one({'match_id': match_id.inserted_id, 'team_id': team_id_2.inserted_id, 'scorer':'Daniel Lopes', 'minute': 45, 'own_goal':'false', 'penalty':'false'})
+shootouts.insert_one({'match_id': match_id.inserted_id, 'winner_id': team_id_2.inserted_id, 'first_shooter': team_id_1.inserted_id})
 
 print("\nInserted new data")
