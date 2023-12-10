@@ -14,9 +14,7 @@ matches = db.matches
 countries = db.countries
 tournaments = db.tournaments
 
-# a. Two simples queries, selecting data from one or two columns/fields
 
-#Query simples que irá obter todos os jogos que foram realizados em Lisbon, em 2023
 simpleQuery1 = { '$and': [ { 'city': "Lisbon" }, {'date': {"$regex": "2023"}} ] }
 
 start_time_simpleQuery1 = time.time()
@@ -48,11 +46,6 @@ print(' ', counter, ' resultados')
 time_simpleQuery2 = end_time_simpleQuery2 - start_time_simpleQuery2
 print("---------------------------------------Tempo total da operação de SimpleQuery2:", time_simpleQuery2, 'segundos')
 
-# b. Two complex queries, using joins and aggregates, involving at least 2 tables/collections of your database (em que uma tem que ter mais do 5 joins)
-
-#COMPLEX QUERY1: Top 5 jogadores (scorer), de Portugal(team), que tem mais golos no torneio: FIFA World Cup Qualification, 
-# cujo os jogos foram realizados em Portugal 
-# e que esses jogos podem ter ido ou não a disputa de penaltys. 
 
 complexQuery1 = [
     {
@@ -73,7 +66,7 @@ complexQuery1 = [
         {
         "$group": {
             "_id": "$scorer",
-            "total_gols": { "$sum": 1 }
+            "total_goals": { "$sum": 1 }
         }
     },
     {
@@ -93,7 +86,7 @@ pprint.pprint(list(result))
 time_complexQuery1 = end_time_complexQuery1 - start_time_complexQuery1
 print("---------------------------------------Tempo total da operação de ComplexQuery1:", time_complexQuery1, 'segundos')
 
-#Complex Query 2
+
 complexQuery2 = [
     
     {"$lookup": {"from": "Goalscorers",
@@ -127,10 +120,8 @@ print("\nResultado da complex query 2:")
 pprint.pprint(list(result2))
 time_complexQuery2 = end_time_complexQuery2 - start_time_complexQuery2
 print("---------------------------------------Tempo total da operação de ComplexQuery2:", time_complexQuery2, 'segundos')
-with open('after_optimization/performance_mongo_ao.csv', 'a') as querys_archive:
-    querys_archive.write(str(time_simpleQuery1) + ', ' + str(time_simpleQuery2) + ', ' + str(time_complexQuery1) + ', ' + str(time_complexQuery2))
 
-# c. One update
+
 updateQuery = {'date':'1882-02-18'}
 newvalues = {"$set": {'home_score': 3, 'away_score': 12, 'home_team': 'Myanmar'} }
 matches.update_one(updateQuery, newvalues)
@@ -140,11 +131,8 @@ print("\nMatches updated:")
 for doc in updated:
     pprint.pprint(doc)
 
-# d. One insert
+
 match_id = matches.insert_one({'date':'2023-11-30', 'home_team': 'BDA2324_4_team1', 'away_team': 'BDA2324_4_team2', 'home_score': 1, 'away_score': 1, 'tournament': 'BDA2324_4_tournament', 'city': 'Lisbon', 'country': 'BDA2324_4_country', 'neutral': False})
-print("PRINTTTTT MATCH IDDDDD", match_id.inserted_id)
 goalscores.insert_one({'match_id': match_id.inserted_id, 'team': 'BDA2324_4_team1', 'scorer':'Tomas Piteira', 'minute': 44, 'own_goal':'false', 'penalty':'false'})
 goalscores.insert_one({'match_id': match_id.inserted_id, 'team': 'BDA2324_4_team2', 'scorer':'Daniel Lopes', 'minute': 45, 'own_goal':'false', 'penalty':'false'})
 shootouts.insert_one({'match_id': match_id.inserted_id, 'winner': 'BDA2324_4_team2', 'first_shooter': 'BDA2324_4_team1'})
-
-print("\nInserted new data")
